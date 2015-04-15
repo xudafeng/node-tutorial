@@ -2,7 +2,7 @@
   "name": "node-tutorial",
   "version": "0.1.0",
   "description": "node tutorial",
-  "keywords": ["node"],
+  "keywords": ["node", "tutorial"],
   "repository": {
     "type": "git",
     "url": "git://github.com/xudafeng/node-tutorial.git"
