@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+<title>node-tutorial</title>
+<style>
+/* invert */
+.invert {background: #fff;}
+.invert #page .page {background: #fff;color: #000;}
+.invert .right-top {color: #000;}
+.invert .inner blockquote p,
+.invert .inner pre,
+.invert .inner code {color: #fff;background:#000;margin-left: 6px;}
+.invert .inner pre,
+.invert .inner ul,
+.invert .inner ol {color:#fff;}
+.invert .inner li {color:#000;}
+/* base */
+html{margin:0;padding:0;height:100%;}
+body {margin:0;padding:0;height:100%;background: #000;-webkit-text-size-adjust:100%;-webkit-font-smoothing:antialiased;opacity:
+1;color:#fff;font-family: Helvetica, arial, freesans, clean, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol";}
+#page {width:100%;height:100%;position:relative;overflow-x:hidden;overflow-y:auto;}
+.page{color:white;width:100%;height:100%;overflow:hidden;text-align:left;position:absolute;opacity:0;transition:transform
+.8s ease;background:black;}
+.prev {opacity:0.2;transform: translate(-100%, 0);}
+.current {opacity:1;z-index:999;}
+.next {opacity:0.2;transform: translate(100%, 0);}
+.right-top {transition:all .5s ease;position: absolute;top: 20px;right:
+20px;z-index: 99999;opacity: 0.4;}
+.right-top:hover {opacity: 0.8;}
+.switcher {background-color: rgba(123, 123, 123, 0.1);border: none;top:
+0;font-size: 40px;margin: 0;max-width: 150px;min-width: 80px;outline:
+none;padding: 0;position: absolute;top: 0;z-index: 9999;color: rgba(158, 158,
+158, 0.5);height:100%;}
+.switcher:hover, .switcher:focus {cursor: pointer;background-color: rgba(123, 123, 123, 0.2);}
+#copyright { position: absolute; bottom: 20px; left: 50%; margin-left: -192px;
+display: none;width: 384px;font-weight:bold;}
+#copyright a {text-decoration: none;color: #D1C556;font-weight:bold;}
+/* inner */
+.inner {margin: 40px 100px;}
+.inner a {text-decoration: none;color: #e7ad52;cursor:pointer;font-weight: bold;}
+.inner h1 {font-size:55px;padding-bottom: 8px;}
+.inner h2 {font-size:40px;padding-bottom: 20px;}
+.inner h3 {font-size:30px;padding-bottom: 10px;}
+.inner h4 {font-size:25px;padding-bottom: 5px;}
+.inner p,
+.inner blockquote,
+.inner pre {margin: 0;font-size: 26px;line-height: 1.4em;margin-top:30px;}
+.inner blockquote,
+.inner pre,
+.inner code {background: #2f3129;border-radius: 4px;padding: 2px
+4px;margin-right:10px;margin-top:30px;font-weight:bold;overflow:hidden;word-wrap: break-word;}
+.inner blockquote p {margin-top:0;word-spacing: 4px;padding: 4px;}
+.inner pre
+.inner ul,
+.inner ol{font-size: 26px;line-height:1.4em;background:rgb(47, 47, 47);border-radius: 10px;padding: 10px 50px;}
+.inner li {color: #fff;padding: 10px 4px;font-size: 22px;}
+.inner hr {display:none;margin-top:10px;}
+.inner table { table-layout:fixed; empty-cells:show; border-collapse:
+collapse;margin:0 auto; border:2px solid #666; }
+.inner table th,
+.inner table td{text-align: left; border:1px solid #666; padding: 0.8em 1em;}
+.inner table th { background: rgba(244, 253, 255, 0.24);font-weight: bold;padding: 1em;}
+.inner img{transition: all 1s linear;width:auto;}
+.inner img:hover {width: 100%!important;}
+/* thumbnail */
+.thumbnail {background: #000;}
+.thumbnail .page {position: static;display: inline-block;overflow:
+hidden;cursor: pointer;width: 20%;height: 20%;background: rgba(128, 128, 128,
+0.35);margin-left: 30px;margin-top: 20px; transform: none; border-radius:
+10px;opacity:1;}
+.thumbnail .page .inner {padding: 4px 10px; margin: 0;text-align: center;}
+.thumbnail .page .inner h1,
+.thumbnail .page .inner h2 {font-size: 22px; text-align: center;}
+.thumbnail .page .inner ul,
+.thumbnail .page .inner li,
+.thumbnail .page .inner ol,
+.thumbnail .page .inner pre,
+.thumbnail .page .inner img,
+.thumbnail .page .inner p,
+.thumbnail .page .inner code,
+.thumbnail .page .inner h3,
+.thumbnail .page .inner h4,
+.thumbnail .page .inner h5,
+.thumbnail .page .inner h6,
+.thumbnail .page .inner table,
+.thumbnail .page .inner i,
+.thumbnail .page .inner strong,
+.thumbnail .page .inner b,
+.thumbnail .page .inner hr,
+.thumbnail .page .inner blockquote{display: none;}
+.thumbnail #copyright {display: block;}
+.thumbnail .switcher {display: none!important;}
+/* highlight */
+.hljs{display:block;overflow-x:auto;padding:.5em;background:#fdf6e3;color:#657b83;-webkit-text-size-adjust:none}.hljs-comment,.hljs-template_comment,.diff .hljs-header,.hljs-doctype,.hljs-pi,.lisp .hljs-string,.hljs-javadoc{color:#93a1a1}.hljs-keyword,.hljs-winutils,.method,.hljs-addition,.css .hljs-tag,.hljs-request,.hljs-status,.nginx .hljs-title{color:#859900}.hljs-number,.hljs-command,.hljs-string,.hljs-tag .hljs-value,.hljs-rules .hljs-value,.hljs-phpdoc,.hljs-dartdoc,.tex .hljs-formula,.hljs-regexp,.hljs-hexcolor,.hljs-link_url{color:#2aa198}.hljs-title,.hljs-localvars,.hljs-chunk,.hljs-decorator,.hljs-built_in,.hljs-identifier,.vhdl .hljs-literal,.hljs-id,.css .hljs-function{color:#268bd2}.hljs-attribute,.hljs-variable,.lisp .hljs-body,.smalltalk .hljs-number,.hljs-constant,.hljs-class .hljs-title,.hljs-parent,.hljs-type,.hljs-link_reference{color:#b58900}.hljs-preprocessor,.hljs-preprocessor .hljs-keyword,.hljs-pragma,.hljs-shebang,.hljs-symbol,.hljs-symbol .hljs-string,.diff .hljs-change,.hljs-special,.hljs-attr_selector,.hljs-subst,.hljs-cdata,.css .hljs-pseudo,.hljs-header{color:#cb4b16}.hljs-deletion,.hljs-important{color:#dc322f}.hljs-link_label{color:#6c71c4}.tex .hljs-formula{background:#eee8d5}
+</style>
+<base target="_blank"/>
+</head>
+<body>
+<div id="page">
+<h2 id="-">概述</h2>
+<p>每个包下面都有一个<code>package.json</code>文件，定义了这个项目所需要依赖的模块，以及项目的配置。</p>
+<p>使用<code>npm install</code> 命令根据这个配置文件，自动下载所需的模块，也就是配置项目所需的运行和开发环境。</p>
+<p>下面是一个的 package.json 文件示例</p>
+<pre><code class="lang-bash">{
+  "<span class="hljs-attribute">name</span>": <span class="hljs-value"><span class="hljs-string">"startserver"</span></span>,
+  "<span class="hljs-attribute">version</span>": <span class="hljs-value"><span class="hljs-string">"1.0.6"</span></span>,
+  "<span class="hljs-attribute">description</span>": <span class="hljs-value"><span class="hljs-string">"Yet another http server"</span></span>,
+  "<span class="hljs-attribute">keywords</span>": <span class="hljs-value">[<span class="hljs-string">"server"</span>, <span class="hljs-string">"httpserver"</span>, <span class="hljs-string">"dev"</span>, <span class="hljs-string">"slider"</span>]</span>,
+  "<span class="hljs-attribute">main</span>": <span class="hljs-value"><span class="hljs-string">"index.js"</span></span>,
+  "<span class="hljs-attribute">bin</span>": <span class="hljs-value">{
+    "<span class="hljs-attribute">ss</span>": <span class="hljs-value"><span class="hljs-string">"./bin/startserver"</span></span>,
+    "<span class="hljs-attribute">startserver</span>": <span class="hljs-value"><span class="hljs-string">"./bin/startserver"</span>
+  </span>}</span>,
+  "<span class="hljs-attribute">repository</span>": <span class="hljs-value">{
+    "<span class="hljs-attribute">type</span>": <span class="hljs-value"><span class="hljs-string">"git"</span></span>,
+    "<span class="hljs-attribute">url</span>": <span class="hljs-value"><span class="hljs-string">"git://github.com/xudafeng/startserver.git"</span>
+  </span>}</span>,
+  "<span class="hljs-attribute">preferGlobal</span>": <span class="hljs-value"><span class="hljs-literal">true</span></span>,
+  "<span class="hljs-attribute">dependencies</span>": <span class="hljs-value">{
+    "<span class="hljs-attribute">foc</span>": <span class="hljs-value"><span class="hljs-string">"~0.1.6"</span></span>,
+    "<span class="hljs-attribute">ipv4</span>": <span class="hljs-value"><span class="hljs-string">"0.0.4"</span></span>,
+    "<span class="hljs-attribute">microtemplate</span>": <span class="hljs-value"><span class="hljs-string">"~0.1.2"</span></span>,
+    "<span class="hljs-attribute">marked</span>": <span class="hljs-value"><span class="hljs-string">"~0.3.3"</span></span>,
+    "<span class="hljs-attribute">highlight.js</span>": <span class="hljs-value"><span class="hljs-string">"~8.3.0"</span></span>,
+    "<span class="hljs-attribute">colorx</span>": <span class="hljs-value"><span class="hljs-string">"0.0.5"</span></span>,
+    "<span class="hljs-attribute">logx</span>": <span class="hljs-value"><span class="hljs-string">"0.0.4"</span></span>,
+    "<span class="hljs-attribute">ecmascript6</span>": <span class="hljs-value"><span class="hljs-string">"~0.1.2"</span></span>,
+    "<span class="hljs-attribute">commander</span>": <span class="hljs-value"><span class="hljs-string">"~2.0.0"</span></span>,
+    "<span class="hljs-attribute">co-request</span>": <span class="hljs-value"><span class="hljs-string">"~0.2.0"</span>
+  </span>}</span>,
+  "<span class="hljs-attribute">devDependencies</span>": <span class="hljs-value">{
+    "<span class="hljs-attribute">ali.regenerator</span>": <span class="hljs-value"><span class="hljs-string">"~0.4.12"</span></span>,
+    "<span class="hljs-attribute">mocha</span>": <span class="hljs-value"><span class="hljs-string">"*"</span></span>,
+    "<span class="hljs-attribute">co-mocha</span>": <span class="hljs-value"><span class="hljs-string">"~1.0.2"</span></span>,
+    "<span class="hljs-attribute">istanbul-harmony</span>": <span class="hljs-value"><span class="hljs-string">"~0.3.0"</span></span>,
+    "<span class="hljs-attribute">should</span>": <span class="hljs-value"><span class="hljs-string">"~4.0.4"</span></span>,
+    "<span class="hljs-attribute">should-http</span>": <span class="hljs-value"><span class="hljs-string">"~0.0.2"</span></span>,
+    "<span class="hljs-attribute">jshint</span>": <span class="hljs-value"><span class="hljs-string">"*"</span>
+  </span>}</span>,
+  "<span class="hljs-attribute">scripts</span>": <span class="hljs-value">{
+    "<span class="hljs-attribute">test</span>": <span class="hljs-value"><span class="hljs-string">"make test"</span></span>,
+    "<span class="hljs-attribute">jshint</span>": <span class="hljs-value"><span class="hljs-string">"make jshint"</span>
+  </span>}</span>,
+  "<span class="hljs-attribute">precommit</span>": <span class="hljs-value">[
+    <span class="hljs-string">"jshint"</span>
+  ]</span>,
+  "<span class="hljs-attribute">author</span>": <span class="hljs-value"><span class="hljs-string">"xudafeng"</span></span>,
+  "<span class="hljs-attribute">contributors</span>": <span class="hljs-value">[
+    <span class="hljs-string">"karoo"</span>,
+    <span class="hljs-string">"ottomao"</span>,
+    <span class="hljs-string">"meowtec"</span>
+  ]</span>,
+  "<span class="hljs-attribute">email</span>": <span class="hljs-value"><span class="hljs-string">"xudafeng@126.com"</span></span>,
+  "<span class="hljs-attribute">blog</span>": <span class="hljs-value"><span class="hljs-string">"http://xdf.me"</span></span>,
+  "<span class="hljs-attribute">homepage</span>": <span class="hljs-value"><span class="hljs-string">"http://startserver.github.io"</span></span>,
+  "<span class="hljs-attribute">license</span>": <span class="hljs-value"><span class="hljs-string">"MIT"</span>
+</span>}
+</code></pre>
+<h2 id="scripts">scripts</h2>
+<p>scripts指定了运行脚本命令的npm命令行缩写，比如 test 指定了运行<code>npm run test</code>时，所要执行的命令。</p>
+<h2 id="dependencies-devdependencies">dependencies，devDependencies</h2>
+<p>dependencies和devDependencies指定了项目运行所依赖的模块和项目开发所需要的模块。</p>
+<ul>
+<li><strong>指定版本</strong>：比如1.2.2，遵循“大版本.次要版本.小版本”的格式规定，安装时只安装指定版本。</li>
+<li><strong>波浪号（tilde）+指定版本</strong>：比如~1.2.2，表示安装1.2.x的最新版本（不低于1.2.2），但是不安装1.3.x，也就是说安装时不改变大版本号和次要版本号。</li>
+<li><strong>插入号（caret）+指定版本</strong>：比如&#710;1.2.2，表示安装1.x.x的最新版本（不低于1.2.2），但是不安装2.x.x，也就是说安装时不改变大版本号。需要注意的是，如果大版本号为0，则插入号的行为与波浪号相同，这是因为此时处于开发阶段，即使是次要版本号变动，也可能带来程序的不兼容。</li>
+<li><strong>latest</strong>：安装最新版本。</li>
+</ul>
+<p><code>package.json</code> 文件可以手工编写，也可以使用<code>npm init</code>命令生成。</p>
+<p>这个命令采用互动方式，要求用户回答一些问题，然后在当前目录生成一个基本的package.json文件。所有问题之中，只有项目名称（name）和项目版本（version）是必填的，其他都是选填的。</p>
+<p>有了package.json文件，直接使用npm install命令，就会在当前目录中安装所需要的模块。</p>
+<pre><code class="lang-bash">$ npm <span class="hljs-keyword">install</span>
+</code></pre>
+<h2 id="bin">bin</h2>
+<p>bin项用来指定各个内部命令对应的可执行文件的位置。</p>
+<pre><code class="lang-js">
+<span class="hljs-string">"bin"</span>: {
+  <span class="hljs-string">"startserver"</span>: <span class="hljs-string">"./bin/startserver."</span>
+}
+</code></pre>
+<p>上面代码指定，startserver 命令对应的可执行文件为 bin 子目录下的 startserver
+文件。Npm会寻找这个文件，在<code>node_modules/.bin/</code>目录下建立符号链接。</p>
+<h2 id="engines">engines</h2>
+<p>engines 指定该项目所需要的<code>node.js</code>版本。</p>
+<h2 id="preferglobal">preferGlobal</h2>
+<p>preferGlobal的值是布尔值，表示当用户不将该模块安装为全局模块时（即不用--global参数），要不要显示警告，表示该模块的本意就是安装为全局模块。</p>
+
+</div>
+<div class="right-top" id="radios">
+  <label>invert</label>
+  <input type="checkbox" id="invert"/>
+  <label>normal</label>
+  <input type="radio" name="slide" value="true" />
+  <label>slide</label>
+  <input id="slide" type="radio" name="slide" checked value="false"/>
+</div>
+<button id="left" class="switcher" style="left: 0px;">&lsaquo;</button>
+<button id="right"   class="switcher" style="right: 0px;">&rsaquo;</button>
+<div id="copyright">Thank you for enjoy. &copy; <a href="https://github.com/xudafeng/startserver"
+target="_blank">Startserver</a> <iframe
+src="http://ghbtns.com/github-btn.html?user=xudafeng&repo=startserver&type=watch&count=true"
+allowtransparency="true" frameborder="0" scrolling="0" width="80px" height="20px"></iframe></div>
+<script>
++function(global, undefined) {
+  var isSlide = document.getElementById('slide').checked;
+  var index = location.hash.split('=')[1] || 1;
+  var left = document.getElementById('left');
+  var right = document.getElementById('right');
+  var page = document.getElementById('page');
+  var invert = document.getElementById('invert');
+  var isThumbnail = false;
+  var isInvert = false;
+  page.designMode = 'on';
+  var pages = page.children;
+  var radios = document.getElementById('radios');
+
+  function setCookie(name, value, expiresHours) {
+    var cookieString = name + '=' + escape(value);
+
+    if (expiresHours > 0) {
+      var date = new Date();
+      date.setTime( date.getTime + expiresHours * 3600 * 1000);
+      cookieString = cookieString + ';expires=' + date.toGMTString();
+    }
+    document.cookie = cookieString;
+  }
+
+  function addClass(index, name) {
+
+    if (!pages[index]) return;
+    pages[index].className += ' ' + name;
+  }
+
+  function removeClass() {
+    for (var i = 0; i < pages.length; i++) {
+      pages[i].className = 'page';
+    }
+  }
+
+  function direct(target) {
+    left.style.display = 'block';
+    right.style.display = 'block';
+    if (index == 1) left.style.display = 'none';
+    if (index == pages.length) right.style.display = 'none';
+    location.href = target || '';
+  }
+
+  function prev() {
+    if (index == 1) return;
+    index --;
+    direct('#page=' + index);
+  }
+
+  function next() {
+    if (index == pages.length) return;
+    index ++;
+    direct('#page=' + index);
+  }
+
+  function thumbnail() {
+    isThumbnail = !isThumbnail;
+    editAble(isThumbnail ? 'false' : 'true');
+    var cls = '';
+    if (isInvert) cls += ' invert';
+    if (isThumbnail) cls += ' thumbnail';
+    document.body.className = cls;
+  }
+
+  function editAble(r) {
+    page.contentEditable = r;
+  }
+
+  function slider() {
+    if (index == 0) return thumbnail();
+    removeClass();
+    addClass(index - 1, 'current');
+    setTimeout(function() {
+      addClass(index, 'next');
+      addClass(index - 2, 'prev');
+    }, 16);
+  }
+
+  var temp = '';
+
+  for (var i = 0;i < pages.length;i++) {
+    var current = pages[i];
+    var tagName = current.tagName;
+    var nextTag = pages[i + 1];
+    var nextTagName = nextTag ? nextTag.tagName : null;
+
+    if (i === 0 || tagName === 'H1' || tagName === 'H2') {
+      temp += '<article class=\'page\'><div class=\'inner\'>';
+    }
+    temp += current.outerHTML;
+
+    if (nextTagName === 'H1' || nextTagName === 'H2') {
+      temp += '<\/div><\/article>';
+    }
+  }
+
+  page.innerHTML = temp + '<\/div><\/article>';
+  pages = page.querySelectorAll('.page');
+
+  function delegate(target) {
+    return target.nodeName && target.nodeName.toLowerCase() === 'article' ? target : delegate(target.parentElement);
+  }
+
+  function getIndex(e) {
+    var p = e.parentNode;
+    var c = p.children;
+    for (var i=0; i < c.length; i++) {
+      if (c[i] == e) return i;
+    }
+  }
+
+  radios.addEventListener('click', function(e) {
+
+    if (e.target.nodeName === 'INPUT' && e.target.value === 'true') {
+      setCookie('startserver-slide', false, 240);
+      direct();
+    }
+  });
+  page.addEventListener('click', function(e) {
+    if (!isThumbnail) return;
+    var target = delegate(e.target);
+    var index = getIndex(target) + 1;
+    thumbnail();
+    direct('#page=' + index);
+  });
+  global.addEventListener('hashchange', function() {
+    index = location.hash.split('=')[1] || 1;
+    slider();
+  });
+  global.addEventListener('mousewheel', function(e) {
+    if (isThumbnail) return;
+    var target = pages[index - 1];
+    var delta = e.wheelDelta / 120;
+    target.scrollTop += delta > 0 ? -10 : 10;
+  });
+  left.addEventListener('click', function() {
+    prev();
+  });
+  right.addEventListener('click', function() {
+    next();
+  });
+  page.addEventListener('dblclick', function() {
+    if (isThumbnail) return;
+    editAble(page.contentEditable === 'true' ? 'false' : 'true');
+  });
+  invert.addEventListener('change', function(e) {
+    var target = e.target;
+    isInvert = target.checked;
+    var cls = '';
+    if (isInvert) cls += ' invert';
+    if (isThumbnail) cls += ' thumbnail';
+    document.body.className = cls;
+  });
+  document.addEventListener('keydown', function(e) {
+    switch (e.keyCode) {
+      case 39:
+      case 40:
+        e.preventDefault();
+        next();
+        break;
+      case 37:
+      case 38:
+        e.preventDefault();
+        prev();
+        break;
+      case 27:
+        e.preventDefault();
+        direct('#page=' + 0);
+        break;
+    }
+  });
+  setTimeout(function() {
+    var images = document.querySelectorAll('img');
+    for (var i = 0; i < images.length; i ++) {
+      images[i].setAttribute('style', 'width:' + images[i].width + 'px;');
+    }
+  }, 5000);
+  setTimeout(function() {
+    slider();
+    direct('#page=' + index);
+    document.body.style.opacity = 1;
+  }, 16);
+}(this);
+</script>
+</body>
+</html>

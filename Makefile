@@ -4,7 +4,7 @@ npm_bin= $$(npm bin)
 all: test
 clean:
 	@rm -rf ./node_modules
-server: install
+server:
 	@${npm_bin}/startserver -m
 install: clean
 	@npm install
