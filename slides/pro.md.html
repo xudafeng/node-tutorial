@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+<title>node-tutorial</title>
+<style>
+/* invert */
+.invert {background: #fff;}
+.invert #page .page {background: #fff;color: #000;}
+.invert .right-top {color: #000;}
+.invert .inner blockquote p,
+.invert .inner pre,
+.invert .inner code {color: #fff;background:#000;margin-left: 6px;}
+.invert .inner pre,
+.invert .inner ul,
+.invert .inner ol {color:#fff;}
+.invert .inner li {color:#000;}
+/* base */
+html{margin:0;padding:0;height:100%;}
+body {margin:0;padding:0;height:100%;background: #000;-webkit-text-size-adjust:100%;-webkit-font-smoothing:antialiased;opacity:
+1;color:#fff;font-family: Helvetica, arial, freesans, clean, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol";}
+#page {width:100%;height:100%;position:relative;overflow-x:hidden;overflow-y:auto;}
+.page{color:white;width:100%;height:100%;overflow:hidden;text-align:left;position:absolute;opacity:0;transition:transform
+.8s ease;background:black;}
+.prev {opacity:0.2;transform: translate(-100%, 0);}
+.current {opacity:1;z-index:999;}
+.next {opacity:0.2;transform: translate(100%, 0);}
+.right-top {transition:all .5s ease;position: absolute;top: 20px;right:
+20px;z-index: 99999;opacity: 0.4;}
+.right-top:hover {opacity: 0.8;}
+.switcher {background-color: rgba(123, 123, 123, 0.1);border: none;top:
+0;font-size: 40px;margin: 0;max-width: 150px;min-width: 80px;outline:
+none;padding: 0;position: absolute;top: 0;z-index: 9999;color: rgba(158, 158,
+158, 0.5);height:100%;}
+.switcher:hover, .switcher:focus {cursor: pointer;background-color: rgba(123, 123, 123, 0.2);}
+#copyright { position: absolute; bottom: 20px; left: 50%; margin-left: -192px;
+display: none;width: 384px;font-weight:bold;}
+#copyright a {text-decoration: none;color: #D1C556;font-weight:bold;}
+/* inner */
+.inner {margin: 40px 100px;}
+.inner a {text-decoration: none;color: #e7ad52;cursor:pointer;font-weight: bold;}
+.inner h1 {font-size:55px;padding-bottom: 8px;}
+.inner h2 {font-size:40px;padding-bottom: 20px;}
+.inner h3 {font-size:30px;padding-bottom: 10px;}
+.inner h4 {font-size:25px;padding-bottom: 5px;}
+.inner p,
+.inner blockquote,
+.inner pre {margin: 0;font-size: 26px;line-height: 1.4em;margin-top:30px;}
+.inner blockquote,
+.inner pre,
+.inner code {background: #2f3129;border-radius: 4px;padding: 2px
+4px;margin-right:10px;margin-top:30px;font-weight:bold;overflow:hidden;word-wrap: break-word;}
+.inner blockquote p {margin-top:0;word-spacing: 4px;padding: 4px;}
+.inner pre
+.inner ul,
+.inner ol{font-size: 26px;line-height:1.4em;background:rgb(47, 47, 47);border-radius: 10px;padding: 10px 50px;}
+.inner li {color: #fff;padding: 10px 4px;font-size: 22px;}
+.inner hr {display:none;margin-top:10px;}
+.inner table { table-layout:fixed; empty-cells:show; border-collapse:
+collapse;margin:0 auto; border:2px solid #666; }
+.inner table th,
+.inner table td{text-align: left; border:1px solid #666; padding: 0.8em 1em;}
+.inner table th { background: rgba(244, 253, 255, 0.24);font-weight: bold;padding: 1em;}
+.inner img{transition: all 1s linear;width:auto;}
+.inner img:hover {width: 100%!important;}
+/* thumbnail */
+.thumbnail {background: #000;}
+.thumbnail .page {position: static;display: inline-block;overflow:
+hidden;cursor: pointer;width: 20%;height: 20%;background: rgba(128, 128, 128,
+0.35);margin-left: 30px;margin-top: 20px; transform: none; border-radius:
+10px;opacity:1;}
+.thumbnail .page .inner {padding: 4px 10px; margin: 0;text-align: center;}
+.thumbnail .page .inner h1,
+.thumbnail .page .inner h2 {font-size: 22px; text-align: center;}
+.thumbnail .page .inner ul,
+.thumbnail .page .inner li,
+.thumbnail .page .inner ol,
+.thumbnail .page .inner pre,
+.thumbnail .page .inner img,
+.thumbnail .page .inner p,
+.thumbnail .page .inner code,
+.thumbnail .page .inner h3,
+.thumbnail .page .inner h4,
+.thumbnail .page .inner h5,
+.thumbnail .page .inner h6,
+.thumbnail .page .inner table,
+.thumbnail .page .inner i,
+.thumbnail .page .inner strong,
+.thumbnail .page .inner b,
+.thumbnail .page .inner hr,
+.thumbnail .page .inner blockquote{display: none;}
+.thumbnail #copyright {display: block;}
+.thumbnail .switcher {display: none!important;}
+/* highlight */
+.hljs{display:block;overflow-x:auto;padding:.5em;background:#fdf6e3;color:#657b83;-webkit-text-size-adjust:none}.hljs-comment,.hljs-template_comment,.diff .hljs-header,.hljs-doctype,.hljs-pi,.lisp .hljs-string,.hljs-javadoc{color:#93a1a1}.hljs-keyword,.hljs-winutils,.method,.hljs-addition,.css .hljs-tag,.hljs-request,.hljs-status,.nginx .hljs-title{color:#859900}.hljs-number,.hljs-command,.hljs-string,.hljs-tag .hljs-value,.hljs-rules .hljs-value,.hljs-phpdoc,.hljs-dartdoc,.tex .hljs-formula,.hljs-regexp,.hljs-hexcolor,.hljs-link_url{color:#2aa198}.hljs-title,.hljs-localvars,.hljs-chunk,.hljs-decorator,.hljs-built_in,.hljs-identifier,.vhdl .hljs-literal,.hljs-id,.css .hljs-function{color:#268bd2}.hljs-attribute,.hljs-variable,.lisp .hljs-body,.smalltalk .hljs-number,.hljs-constant,.hljs-class .hljs-title,.hljs-parent,.hljs-type,.hljs-link_reference{color:#b58900}.hljs-preprocessor,.hljs-preprocessor .hljs-keyword,.hljs-pragma,.hljs-shebang,.hljs-symbol,.hljs-symbol .hljs-string,.diff .hljs-change,.hljs-special,.hljs-attr_selector,.hljs-subst,.hljs-cdata,.css .hljs-pseudo,.hljs-header{color:#cb4b16}.hljs-deletion,.hljs-important{color:#dc322f}.hljs-link_label{color:#6c71c4}.tex .hljs-formula{background:#eee8d5}
+</style>
+<base target="_blank"/>
+</head>
+<body>
+<div id="page">
+<h2 id="-">模块化</h2>
+<p>Node.js 采用模块化结构，遵照<a href="http://wiki.commonjs.org/wiki/CommonJS">CommonJS规范</a>的定义和使用。模块与文件是一一对应的。加载一个模块，实际上就是加载对应的一个模块文件。</p>
+<p>require方法用于指定加载模块。</p>
+<pre><code class="lang-js"><span class="hljs-reserved">var</span> a = <span class="hljs-built_in">require</span>(<span class="hljs-string">'a'</span>);
+</code></pre>
+<p>上面代码表明，以当前目录下的<code>a.js</code>文件为路径，加载名为<code>a</code>的模块。由于 require
+方法默认加载后缀为<code>.js</code>的文件，因此可以把后缀省略，所以也可以直接如下写法。</p>
+<pre><code class="lang-js"><span class="hljs-reserved">var</span> a = <span class="hljs-built_in">require</span>(<span class="hljs-string">'./a'</span>);
+</code></pre>
+<p>如果<code>require</code>方法的参数不带有路径，则<code>node.js</code>依次按照以下顺序，去寻找模块文件。
+node.js依次到下面的目录，去寻找<code>a</code>模块。</p>
+<pre><code class="lang-bash">-<span class="ruby"> ./node_modules/a
+</span>-<span class="ruby"> ../node_modules/a
+</span>-<span class="ruby"> ../../node_modules/a
+</span>-<span class="ruby"> /node_modules/a</span>
+</code></pre>
+<p>Node会依次从当前目录向上，一级级在<code>node_modules</code>子目录下寻找模块。如果没有找到该模块，会抛出一个错误。这样做的好处是，不同的项目可以在自己的目录中，安装同一个模块的不同版本，而不会发生版本冲突。</p>
+<h2 id="-">系统模块</h2>
+<p>Node.js 系统提供了一系列功能模块，与操作系统交互与调用。这些核心的功能模块集成在 node 中，可以直接使用。</p>
+<ul>
+<li><strong>http</strong>：HTTP 相关功能。</li>
+<li><strong>path</strong>：处理文件路径。</li>
+<li><strong>url</strong>：操作 URL。</li>
+<li><strong>fs</strong>：系统 io 功能。</li>
+<li><strong>child_process</strong>：进程功能。</li>
+<li><strong>util</strong>：提供了一些工具。</li>
+</ul>
+<h2 id="-">自定义模块</h2>
+<p>下面是一个最简单的模块，新建一个<code>a.js</code>文件如下：</p>
+<pre><code class="lang-js"><span class="hljs-built_in">module</span>.exports = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(i)</span> </span>{
+  <span class="hljs-built_in">console</span>.log(i);
+};
+</code></pre>
+<p>上面代码就是一个模块，它通过<code>module.exports</code>变量，对外输出一个方法。</p>
+<p>使用方法如下:</p>
+<pre><code class="lang-js"><span class="hljs-reserved">var</span> m = <span class="hljs-built_in">require</span>(<span class="hljs-string">'./a'</span>);
+m(<span class="hljs-string">'输出'</span>);
+</code></pre>
+<p>更深入的用法：</p>
+<pre><code class="lang-js"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">doSomething</span><span class="hljs-params">(i)</span> {</span>
+  console.<span class="hljs-built_in">log</span>(<span class="hljs-built_in">i</span>);
+}
+
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">a</span><span class="hljs-params">(i)</span> {</span>
+  doSomething(<span class="hljs-built_in">i</span>);
+}
+
+module.exports = a;
+</code></pre>
+<h2 id="-">全局对象和全局变量</h2>
+<p>Node提供以下几个全局对象</p>
+<ul>
+<li><strong>global</strong>：global 为 node 全局对象。</li>
+<li><strong>process</strong>：该对象表示 Node 所处的当前进程，允许与此进程交互。</li>
+<li><strong>console</strong>：这是 Node 内置的 console 模块，提供命令行环境中的输出。</li>
+<li><strong>module</strong>：该对象指向当前模块，<code>module.exports</code>属性是该模块对外的接口，被require方法调用。</li>
+<li><strong>exports</strong>：该对象指向<code>module.exports</code>属性，是该属性的简写形式。exports也不是全局变量，而是每个模块私有的。</li>
+</ul>
+<p>Node 提供一些全局函数。</p>
+<ul>
+<li><strong>setTimeout()</strong>：提供简单的定时器功能。</li>
+<li><strong>clearTimeout()</strong>：用于终止一个 setTimeout 方法新建的定时器。</li>
+<li><strong>setInterval()</strong>：循环定时器。</li>
+<li><strong>clearInterval()</strong>：终止一个用 setInterval 方法新建的定时器。</li>
+<li><strong>require()</strong>：用于加载模块。</li>
+<li><strong>Buffer()</strong>：用于操作二进制数据。</li>
+</ul>
+<p>Node提供两个全局变量。</p>
+<ul>
+<li><strong>__filename</strong>：获取当前运行的脚本文件名。</li>
+<li><strong>__dirname</strong>：获取当前运行的脚本所在的目录名。</li>
+</ul>
+<p>module变量指代当前模块。module.exports 变量表示当前模块对外输出的接口，其他文件加载该模块，实际上就是读取 module.exports 变量。</p>
+<ul>
+<li>module.id 模块的识别符，通常是模块的文件名。</li>
+<li>module.filename 模块的文件名。</li>
+<li>module.loaded 返回一个布尔值，表示模块是否已经完成加载。</li>
+<li>module.parent 返回使用该模块的模块。</li>
+<li>module.children 返回一个数组，表示该模块要用到的其他模块。</li>
+</ul>
+<h2 id="-">异常处理</h2>
+<h2 id="try-catch">try-catch</h2>
+<p>最常用的捕获异常的方式，就是使用try...catch。但是却无法捕获异步运行的代码抛出的异常。</p>
+<pre><code class="lang-js">
+<span class="hljs-keyword">try</span> {
+  setTimeout(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span></span>{
+    <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">Error</span>(<span class="hljs-string">"error"</span>);
+  }, <span class="hljs-number">16</span>);
+} <span class="hljs-keyword">catch</span>(err) {
+  <span class="hljs-built_in">console</span>.log(err);
+}
+</code></pre>
+<p>代码抛出的异常无法被 catch 代码块捕获。</p>
+<p>怎么办？</p>
+<h2 id="uncaughtexception-">uncaughtException事件</h2>
+<p>当一个异常未被捕获，就会触发 uncaughtException 事件，可以对这个事件注册回调函数，从而捕获异常。</p>
+<pre><code class="lang-js">process.on(<span class="hljs-string">'uncaughtException'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(err)</span> </span>{
+  <span class="hljs-built_in">console</span>.error(<span class="hljs-string">'Error caught in uncaughtException event:'</span>, err);
+});
+
+<span class="hljs-keyword">try</span> {
+  setTimeout(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span></span>{
+    <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">Error</span>(<span class="hljs-string">"error"</span>);
+  }, <span class="hljs-number">16</span>);
+} <span class="hljs-keyword">catch</span> (err) {
+  <span class="hljs-built_in">console</span>.log(err);
+}
+</code></pre>
+
+</div>
+<div class="right-top" id="radios">
+  <label>invert</label>
+  <input type="checkbox" id="invert"/>
+  <label>normal</label>
+  <input type="radio" name="slide" value="true" />
+  <label>slide</label>
+  <input id="slide" type="radio" name="slide" checked value="false"/>
+</div>
+<button id="left" class="switcher" style="left: 0px;">&lsaquo;</button>
+<button id="right"   class="switcher" style="right: 0px;">&rsaquo;</button>
+<div id="copyright">Thank you for enjoy. &copy; <a href="https://github.com/xudafeng/startserver"
+target="_blank">Startserver</a> <iframe
+src="http://ghbtns.com/github-btn.html?user=xudafeng&repo=startserver&type=watch&count=true"
+allowtransparency="true" frameborder="0" scrolling="0" width="80px" height="20px"></iframe></div>
+<script>
++function(global, undefined) {
+  var isSlide = document.getElementById('slide').checked;
+  var index = location.hash.split('=')[1] || 1;
+  var left = document.getElementById('left');
+  var right = document.getElementById('right');
+  var page = document.getElementById('page');
+  var invert = document.getElementById('invert');
+  var isThumbnail = false;
+  var isInvert = false;
+  page.designMode = 'on';
+  var pages = page.children;
+  var radios = document.getElementById('radios');
+
+  function setCookie(name, value, expiresHours) {
+    var cookieString = name + '=' + escape(value);
+
+    if (expiresHours > 0) {
+      var date = new Date();
+      date.setTime( date.getTime + expiresHours * 3600 * 1000);
+      cookieString = cookieString + ';expires=' + date.toGMTString();
+    }
+    document.cookie = cookieString;
+  }
+
+  function addClass(index, name) {
+
+    if (!pages[index]) return;
+    pages[index].className += ' ' + name;
+  }
+
+  function removeClass() {
+    for (var i = 0; i < pages.length; i++) {
+      pages[i].className = 'page';
+    }
+  }
+
+  function direct(target) {
+    left.style.display = 'block';
+    right.style.display = 'block';
+    if (index == 1) left.style.display = 'none';
+    if (index == pages.length) right.style.display = 'none';
+    location.href = target || '';
+  }
+
+  function prev() {
+    if (index == 1) return;
+    index --;
+    direct('#page=' + index);
+  }
+
+  function next() {
+    if (index == pages.length) return;
+    index ++;
+    direct('#page=' + index);
+  }
+
+  function thumbnail() {
+    isThumbnail = !isThumbnail;
+    editAble(isThumbnail ? 'false' : 'true');
+    var cls = '';
+    if (isInvert) cls += ' invert';
+    if (isThumbnail) cls += ' thumbnail';
+    document.body.className = cls;
+  }
+
+  function editAble(r) {
+    page.contentEditable = r;
+  }
+
+  function slider() {
+    if (index == 0) return thumbnail();
+    removeClass();
+    addClass(index - 1, 'current');
+    setTimeout(function() {
+      addClass(index, 'next');
+      addClass(index - 2, 'prev');
+    }, 16);
+  }
+
+  var temp = '';
+
+  for (var i = 0;i < pages.length;i++) {
+    var current = pages[i];
+    var tagName = current.tagName;
+    var nextTag = pages[i + 1];
+    var nextTagName = nextTag ? nextTag.tagName : null;
+
+    if (i === 0 || tagName === 'H1' || tagName === 'H2') {
+      temp += '<article class=\'page\'><div class=\'inner\'>';
+    }
+    temp += current.outerHTML;
+
+    if (nextTagName === 'H1' || nextTagName === 'H2') {
+      temp += '<\/div><\/article>';
+    }
+  }
+
+  page.innerHTML = temp + '<\/div><\/article>';
+  pages = page.querySelectorAll('.page');
+
+  function delegate(target) {
+    return target.nodeName && target.nodeName.toLowerCase() === 'article' ? target : delegate(target.parentElement);
+  }
+
+  function getIndex(e) {
+    var p = e.parentNode;
+    var c = p.children;
+    for (var i=0; i < c.length; i++) {
+      if (c[i] == e) return i;
+    }
+  }
+
+  radios.addEventListener('click', function(e) {
+
+    if (e.target.nodeName === 'INPUT' && e.target.value === 'true') {
+      setCookie('startserver-slide', false, 240);
+      direct();
+    }
+  });
+  page.addEventListener('click', function(e) {
+    if (!isThumbnail) return;
+    var target = delegate(e.target);
+    var index = getIndex(target) + 1;
+    thumbnail();
+    direct('#page=' + index);
+  });
+  global.addEventListener('hashchange', function() {
+    index = location.hash.split('=')[1] || 1;
+    slider();
+  });
+  global.addEventListener('mousewheel', function(e) {
+    if (isThumbnail) return;
+    var target = pages[index - 1];
+    var delta = e.wheelDelta / 120;
+    target.scrollTop += delta > 0 ? -10 : 10;
+  });
+  left.addEventListener('click', function() {
+    prev();
+  });
+  right.addEventListener('click', function() {
+    next();
+  });
+  page.addEventListener('dblclick', function() {
+    if (isThumbnail) return;
+    editAble(page.contentEditable === 'true' ? 'false' : 'true');
+  });
+  invert.addEventListener('change', function(e) {
+    var target = e.target;
+    isInvert = target.checked;
+    var cls = '';
+    if (isInvert) cls += ' invert';
+    if (isThumbnail) cls += ' thumbnail';
+    document.body.className = cls;
+  });
+  document.addEventListener('keydown', function(e) {
+    switch (e.keyCode) {
+      case 39:
+      case 40:
+        e.preventDefault();
+        next();
+        break;
+      case 37:
+      case 38:
+        e.preventDefault();
+        prev();
+        break;
+      case 27:
+        e.preventDefault();
+        direct('#page=' + 0);
+        break;
+    }
+  });
+  setTimeout(function() {
+    var images = document.querySelectorAll('img');
+    for (var i = 0; i < images.length; i ++) {
+      images[i].setAttribute('style', 'width:' + images[i].width + 'px;');
+    }
+  }, 5000);
+  setTimeout(function() {
+    slider();
+    direct('#page=' + index);
+    document.body.style.opacity = 1;
+  }, 16);
+}(this);
+</script>
+</body>
+</html>

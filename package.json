@@ -1,0 +1,18 @@
+{
+  "name": "node-tutorial",
+  "version": "0.1.0",
+  "description": "node tutorial",
+  "keywords": ["node", "tutorial"],
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/xudafeng/node-tutorial.git"
+  },
+  "devDependencies": {
+    "startserver": "*"
+  },
+  "homepage": "https://github.com/xudafeng/node-tutorial",
+  "author": "xudafeng",
+  "email": "xudafeng@126.com",
+  "blog": "http://xdf.me",
+  "license": "MIT"
+}

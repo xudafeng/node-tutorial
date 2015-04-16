@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+<title>node-tutorial</title>
+<style>
+/* invert */
+.invert {background: #fff;}
+.invert #page .page {background: #fff;color: #000;}
+.invert .right-top {color: #000;}
+.invert .inner blockquote p,
+.invert .inner pre,
+.invert .inner code {color: #fff;background:#000;margin-left: 6px;}
+.invert .inner pre,
+.invert .inner ul,
+.invert .inner ol {color:#fff;}
+.invert .inner li {color:#000;}
+/* base */
+html{margin:0;padding:0;height:100%;}
+body {margin:0;padding:0;height:100%;background: #000;-webkit-text-size-adjust:100%;-webkit-font-smoothing:antialiased;opacity:
+1;color:#fff;font-family: Helvetica, arial, freesans, clean, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol";}
+#page {width:100%;height:100%;position:relative;overflow-x:hidden;overflow-y:auto;}
+.page{color:white;width:100%;height:100%;overflow:hidden;text-align:left;position:absolute;opacity:0;transition:transform
+.8s ease;background:black;}
+.prev {opacity:0.2;transform: translate(-100%, 0);}
+.current {opacity:1;z-index:999;}
+.next {opacity:0.2;transform: translate(100%, 0);}
+.right-top {transition:all .5s ease;position: absolute;top: 20px;right:
+20px;z-index: 99999;opacity: 0.4;}
+.right-top:hover {opacity: 0.8;}
+.switcher {background-color: rgba(123, 123, 123, 0.1);border: none;top:
+0;font-size: 40px;margin: 0;max-width: 150px;min-width: 80px;outline:
+none;padding: 0;position: absolute;top: 0;z-index: 9999;color: rgba(158, 158,
+158, 0.5);height:100%;}
+.switcher:hover, .switcher:focus {cursor: pointer;background-color: rgba(123, 123, 123, 0.2);}
+#copyright { position: absolute; bottom: 20px; left: 50%; margin-left: -192px;
+display: none;width: 384px;font-weight:bold;}
+#copyright a {text-decoration: none;color: #D1C556;font-weight:bold;}
+/* inner */
+.inner {margin: 40px 100px;}
+.inner a {text-decoration: none;color: #e7ad52;cursor:pointer;font-weight: bold;}
+.inner h1 {font-size:55px;padding-bottom: 8px;}
+.inner h2 {font-size:40px;padding-bottom: 20px;}
+.inner h3 {font-size:30px;padding-bottom: 10px;}
+.inner h4 {font-size:25px;padding-bottom: 5px;}
+.inner p,
+.inner blockquote,
+.inner pre {margin: 0;font-size: 26px;line-height: 1.4em;margin-top:30px;}
+.inner blockquote,
+.inner pre,
+.inner code {background: #2f3129;border-radius: 4px;padding: 2px
+4px;margin-right:10px;margin-top:30px;font-weight:bold;overflow:hidden;word-wrap: break-word;}
+.inner blockquote p {margin-top:0;word-spacing: 4px;padding: 4px;}
+.inner pre
+.inner ul,
+.inner ol{font-size: 26px;line-height:1.4em;background:rgb(47, 47, 47);border-radius: 10px;padding: 10px 50px;}
+.inner li {color: #fff;padding: 10px 4px;font-size: 22px;}
+.inner hr {display:none;margin-top:10px;}
+.inner table { table-layout:fixed; empty-cells:show; border-collapse:
+collapse;margin:0 auto; border:2px solid #666; }
+.inner table th,
+.inner table td{text-align: left; border:1px solid #666; padding: 0.8em 1em;}
+.inner table th { background: rgba(244, 253, 255, 0.24);font-weight: bold;padding: 1em;}
+.inner img{transition: all 1s linear;width:auto;}
+.inner img:hover {width: 100%!important;}
+/* thumbnail */
+.thumbnail {background: #000;}
+.thumbnail .page {position: static;display: inline-block;overflow:
+hidden;cursor: pointer;width: 20%;height: 20%;background: rgba(128, 128, 128,
+0.35);margin-left: 30px;margin-top: 20px; transform: none; border-radius:
+10px;opacity:1;}
+.thumbnail .page .inner {padding: 4px 10px; margin: 0;text-align: center;}
+.thumbnail .page .inner h1,
+.thumbnail .page .inner h2 {font-size: 22px; text-align: center;}
+.thumbnail .page .inner ul,
+.thumbnail .page .inner li,
+.thumbnail .page .inner ol,
+.thumbnail .page .inner pre,
+.thumbnail .page .inner img,
+.thumbnail .page .inner p,
+.thumbnail .page .inner code,
+.thumbnail .page .inner h3,
+.thumbnail .page .inner h4,
+.thumbnail .page .inner h5,
+.thumbnail .page .inner h6,
+.thumbnail .page .inner table,
+.thumbnail .page .inner i,
+.thumbnail .page .inner strong,
+.thumbnail .page .inner b,
+.thumbnail .page .inner hr,
+.thumbnail .page .inner blockquote{display: none;}
+.thumbnail #copyright {display: block;}
+.thumbnail .switcher {display: none!important;}
+/* highlight */
+.hljs{display:block;overflow-x:auto;padding:.5em;background:#fdf6e3;color:#657b83;-webkit-text-size-adjust:none}.hljs-comment,.hljs-template_comment,.diff .hljs-header,.hljs-doctype,.hljs-pi,.lisp .hljs-string,.hljs-javadoc{color:#93a1a1}.hljs-keyword,.hljs-winutils,.method,.hljs-addition,.css .hljs-tag,.hljs-request,.hljs-status,.nginx .hljs-title{color:#859900}.hljs-number,.hljs-command,.hljs-string,.hljs-tag .hljs-value,.hljs-rules .hljs-value,.hljs-phpdoc,.hljs-dartdoc,.tex .hljs-formula,.hljs-regexp,.hljs-hexcolor,.hljs-link_url{color:#2aa198}.hljs-title,.hljs-localvars,.hljs-chunk,.hljs-decorator,.hljs-built_in,.hljs-identifier,.vhdl .hljs-literal,.hljs-id,.css .hljs-function{color:#268bd2}.hljs-attribute,.hljs-variable,.lisp .hljs-body,.smalltalk .hljs-number,.hljs-constant,.hljs-class .hljs-title,.hljs-parent,.hljs-type,.hljs-link_reference{color:#b58900}.hljs-preprocessor,.hljs-preprocessor .hljs-keyword,.hljs-pragma,.hljs-shebang,.hljs-symbol,.hljs-symbol .hljs-string,.diff .hljs-change,.hljs-special,.hljs-attr_selector,.hljs-subst,.hljs-cdata,.css .hljs-pseudo,.hljs-header{color:#cb4b16}.hljs-deletion,.hljs-important{color:#dc322f}.hljs-link_label{color:#6c71c4}.tex .hljs-formula{background:#eee8d5}
+</style>
+<base target="_blank"/>
+</head>
+<body>
+<div id="page">
+<h2 id="web-">web 编程</h2>
+<h2 id="http-">http 模块</h2>
+<p>http 模块主要用于搭建HTTP服务。使用<code>Node.js</code>搭建HTTP服务器非常简单。</p>
+<pre><code class="lang-js"><span class="hljs-keyword">var</span> http = <span class="hljs-built_in">require</span>(<span class="hljs-string">'http'</span>);
+
+http.createServer(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(request, response)</span></span>{
+  response.writeHead(<span class="hljs-number">200</span>, {<span class="hljs-string">'Content-Type'</span>: <span class="hljs-string">'text/plain'</span>});
+  response.end(<span class="hljs-string">'Hello World\n'</span>);
+}).listen(<span class="hljs-number">8080</span>, <span class="hljs-string">"127.0.0.1"</span>);
+
+<span class="hljs-built_in">console</span>.log(<span class="hljs-string">'Server running on port 8080.'</span>);
+</code></pre>
+<p>上面代码第一行<code>var http = require(&quot;http&quot;)</code>，表示加载http模块。
+然后，调用http模块的createServer方法，创造一个服务器实例。</p>
+<p><code>ceateServer</code>方法接受一个函数作为参数，该函数的request参数是一个对象，表示客户端的HTTP请求；response参数也是一个对象，表示服务器端的HTTP回应。response.writeHead方法表示，服务器端回应一个HTTP头信息；response.end方法表示，服务器端回应的具体内容，以及回应完成后关闭本次对话。最后的listen(8080)表示启动服务器实例，监听本机的8080端口。</p>
+<p>将上面这几行代码保存成文件app.js，然后用node调用这个文件，服务器就开始运行了。</p>
+<pre><code class="lang-bash"><span class="hljs-variable">$ </span>node app.js
+</code></pre>
+<p>回调函数的req（request）对象，拥有以下属性。</p>
+<ul>
+<li>url：发出请求的网址。</li>
+<li>method：HTTP 请求的方法。</li>
+<li>headers：HTTP 请求的所有 HTTP 头信息。</li>
+</ul>
+<h2 id="post-">POST请求</h2>
+<p>当客户端采用POST方法发送数据时，服务器端可以对<code>data</code>和<code>end</code>两个事件，设立监听函数。</p>
+<pre><code class="lang-js">
+<span class="hljs-keyword">var</span> http = <span class="hljs-built_in">require</span>(<span class="hljs-string">'http'</span>);
+
+http.createServer(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(req, res)</span> </span>{
+  <span class="hljs-keyword">var</span> content = <span class="hljs-string">""</span>;
+
+  req.on(<span class="hljs-string">'data'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(chunk)</span> </span>{
+    content += chunk;
+  });
+
+  req.on(<span class="hljs-string">'end'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{
+    res.writeHead(<span class="hljs-number">200</span>, {<span class="hljs-string">"Content-Type"</span>: <span class="hljs-string">"text/plain"</span>});
+    res.write(<span class="hljs-string">"You've sent: "</span> + content);
+    res.end();
+  });
+
+}).listen(<span class="hljs-number">8080</span>);
+</code></pre>
+<p>data事件会在数据接收过程中，每收到一段数据就触发一次，接收到的数据被传入回调函数。end事件则是在所有数据接收完成后触发。</p>
+<h2 id="get-">get方法</h2>
+<p>get方法用于发出get请求。</p>
+<pre><code class="lang-js">
+http.<span class="hljs-keyword">get</span>({
+  host: <span class="hljs-string">'localhost'</span>,
+  path: <span class="hljs-string">'/a'</span>
+}, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(response)</span> </span>{
+  <span class="hljs-keyword">var</span> body = <span class="hljs-string">''</span>;
+  response.on(<span class="hljs-string">'data'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(d)</span> </span>{
+    body += d;
+  });
+
+  response.on(<span class="hljs-string">'end'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{
+    console.log(body);
+  });
+});
+</code></pre>
+<h2 id="request-">request方法</h2>
+<p>request方法用于发出HTTP请求。</p>
+<pre><code class="lang-js">var http = <span class="hljs-literal">require</span>(<span class="hljs-string">'http'</span>);
+
+var <span class="hljs-literal">options</span> = <span class="hljs-keyword">{</span>
+  <span class="hljs-keyword">host</span>: <span class="hljs-string">'www.baidu.com'</span>,
+  <span class="hljs-built_in">path</span>: <span class="hljs-string">'/'</span>
+<span class="hljs-keyword">}</span>;
+
+var req = http.request(<span class="hljs-literal">options</span>, callback);
+
+req.write(<span class="hljs-string">"hello world!"</span>);
+req.end();
+</code></pre>
+<p>request对象的第一个参数是options对象，用于指定请求的域名和路径，第二个参数是请求完成后的回调函数。</p>
+<p>如果使用POST方法发出请求，只需在options对象中设定即可。</p>
+<pre><code class="lang-js"><span class="hljs-keyword">var</span> options = {
+  host: 'www.example.com',
+  path: '/',
+  port: '<span class="hljs-number">80</span>',
+  <span class="hljs-keyword">method</span>: '<span class="hljs-type">POST</span>'
+};
+</code></pre>
+<p>指定HTTP头信息，也是在<code>options</code>对象中设定。</p>
+<pre><code class="lang-js"><span class="hljs-keyword">var</span> options = {
+  headers: {
+    custom: <span class="hljs-string">'Custom Header Demo works'</span>
+  }
+};
+</code></pre>
+<h2 id="-">模块方法</h2>
+<p> (1) http 模块的方法</p>
+<ul>
+<li><p>createServer(callback)：创造服务器实例。</p>
+<p>(2) 服务器实例的方法</p>
+</li>
+<li><p>listen(port)：启动服务器监听指定端口。</p>
+<p>(3) HTTP回应的方法</p>
+</li>
+<li><p>setHeader(key, value)：指定HTTP头信息。</p>
+</li>
+<li>write(str)：指定HTTP回应的内容。</li>
+<li>end()：发送HTTP回应。</li>
+</ul>
+<h2 id="koa-">koa 是什么？</h2>
+<p>致力于成为一个更小、更健壮、更富有表现力的 Web 框架。使用 koa 编写 web 应用，通过组合不同的 generator，可以免除重复繁琐的回调函数嵌套，并极大地提升常用错误处理效率。Koa 不在内核方法中绑定任何中间件，它仅仅提供了一个轻量优雅的函数库，使得编写 Web 应用变得得心应手。</p>
+<pre><code class="lang-js"><span class="hljs-keyword">var</span> koa = <span class="hljs-built_in">require</span>(<span class="hljs-string">'koa'</span>);
+<span class="hljs-keyword">var</span> app = koa();
+
+<span class="hljs-comment">// x-response-time</span>
+app.use(<span class="hljs-function"><span class="hljs-keyword">function</span> *<span class="hljs-params">(next)</span> </span>{
+  <span class="hljs-comment">// (1) 进入路由</span>
+  <span class="hljs-keyword">var</span> start = <span class="hljs-keyword">new</span> <span class="hljs-built_in">Date</span>;
+  <span class="hljs-keyword">yield</span> next;
+  <span class="hljs-comment">// (5) 再次进入 x-response-time 中间件，记录2次通过此中间件「穿越」的时间</span>
+  <span class="hljs-keyword">var</span> ms = <span class="hljs-keyword">new</span> <span class="hljs-built_in">Date</span> - start;
+  <span class="hljs-keyword">this</span>.set(<span class="hljs-string">'X-Response-Time'</span>, ms + <span class="hljs-string">'ms'</span>);
+  <span class="hljs-comment">// (6) 返回 this.body</span>
+});
+
+<span class="hljs-comment">// logger</span>
+app.use(<span class="hljs-function"><span class="hljs-keyword">function</span> *<span class="hljs-params">(next)</span> </span>{
+  <span class="hljs-comment">// (2) 进入 logger 中间件</span>
+  <span class="hljs-keyword">var</span> start = <span class="hljs-keyword">new</span> <span class="hljs-built_in">Date</span>;
+  <span class="hljs-keyword">yield</span> next;
+  <span class="hljs-comment">// (4) 再次进入 logger 中间件，记录2次通过此中间件「穿越」的时间</span>
+  <span class="hljs-keyword">var</span> ms = <span class="hljs-keyword">new</span> <span class="hljs-built_in">Date</span> - start;
+  <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'%s %s - %s'</span>, <span class="hljs-keyword">this</span>.method, <span class="hljs-keyword">this</span>.url, ms);
+});
+
+<span class="hljs-comment">// response</span>
+app.use(<span class="hljs-function"><span class="hljs-keyword">function</span> *<span class="hljs-params">()</span> </span>{
+  <span class="hljs-comment">// (3) 进入 response 中间件，没有捕获到下一个符合条件的中间件，传递到 upstream</span>
+  <span class="hljs-keyword">this</span>.body = <span class="hljs-string">'Hello World'</span>;
+});
+
+app.listen(<span class="hljs-number">3000</span>);
+</code></pre>
+
+</div>
+<div class="right-top" id="radios">
+  <label>invert</label>
+  <input type="checkbox" id="invert"/>
+  <label>normal</label>
+  <input type="radio" name="slide" value="true" />
+  <label>slide</label>
+  <input id="slide" type="radio" name="slide" checked value="false"/>
+</div>
+<button id="left" class="switcher" style="left: 0px;">&lsaquo;</button>
+<button id="right"   class="switcher" style="right: 0px;">&rsaquo;</button>
+<div id="copyright">Thank you for enjoy. &copy; <a href="https://github.com/xudafeng/startserver"
+target="_blank">Startserver</a> <iframe
+src="http://ghbtns.com/github-btn.html?user=xudafeng&repo=startserver&type=watch&count=true"
+allowtransparency="true" frameborder="0" scrolling="0" width="80px" height="20px"></iframe></div>
+<script>
++function(global, undefined) {
+  var isSlide = document.getElementById('slide').checked;
+  var index = location.hash.split('=')[1] || 1;
+  var left = document.getElementById('left');
+  var right = document.getElementById('right');
+  var page = document.getElementById('page');
+  var invert = document.getElementById('invert');
+  var isThumbnail = false;
+  var isInvert = false;
+  page.designMode = 'on';
+  var pages = page.children;
+  var radios = document.getElementById('radios');
+
+  function setCookie(name, value, expiresHours) {
+    var cookieString = name + '=' + escape(value);
+
+    if (expiresHours > 0) {
+      var date = new Date();
+      date.setTime( date.getTime + expiresHours * 3600 * 1000);
+      cookieString = cookieString + ';expires=' + date.toGMTString();
+    }
+    document.cookie = cookieString;
+  }
+
+  function addClass(index, name) {
+
+    if (!pages[index]) return;
+    pages[index].className += ' ' + name;
+  }
+
+  function removeClass() {
+    for (var i = 0; i < pages.length; i++) {
+      pages[i].className = 'page';
+    }
+  }
+
+  function direct(target) {
+    left.style.display = 'block';
+    right.style.display = 'block';
+    if (index == 1) left.style.display = 'none';
+    if (index == pages.length) right.style.display = 'none';
+    location.href = target || '';
+  }
+
+  function prev() {
+    if (index == 1) return;
+    index --;
+    direct('#page=' + index);
+  }
+
+  function next() {
+    if (index == pages.length) return;
+    index ++;
+    direct('#page=' + index);
+  }
+
+  function thumbnail() {
+    isThumbnail = !isThumbnail;
+    editAble(isThumbnail ? 'false' : 'true');
+    var cls = '';
+    if (isInvert) cls += ' invert';
+    if (isThumbnail) cls += ' thumbnail';
+    document.body.className = cls;
+  }
+
+  function editAble(r) {
+    page.contentEditable = r;
+  }
+
+  function slider() {
+    if (index == 0) return thumbnail();
+    removeClass();
+    addClass(index - 1, 'current');
+    setTimeout(function() {
+      addClass(index, 'next');
+      addClass(index - 2, 'prev');
+    }, 16);
+  }
+
+  var temp = '';
+
+  for (var i = 0;i < pages.length;i++) {
+    var current = pages[i];
+    var tagName = current.tagName;
+    var nextTag = pages[i + 1];
+    var nextTagName = nextTag ? nextTag.tagName : null;
+
+    if (i === 0 || tagName === 'H1' || tagName === 'H2') {
+      temp += '<article class=\'page\'><div class=\'inner\'>';
+    }
+    temp += current.outerHTML;
+
+    if (nextTagName === 'H1' || nextTagName === 'H2') {
+      temp += '<\/div><\/article>';
+    }
+  }
+
+  page.innerHTML = temp + '<\/div><\/article>';
+  pages = page.querySelectorAll('.page');
+
+  function delegate(target) {
+    return target.nodeName && target.nodeName.toLowerCase() === 'article' ? target : delegate(target.parentElement);
+  }
+
+  function getIndex(e) {
+    var p = e.parentNode;
+    var c = p.children;
+    for (var i=0; i < c.length; i++) {
+      if (c[i] == e) return i;
+    }
+  }
+
+  radios.addEventListener('click', function(e) {
+
+    if (e.target.nodeName === 'INPUT' && e.target.value === 'true') {
+      setCookie('startserver-slide', false, 240);
+      direct();
+    }
+  });
+  page.addEventListener('click', function(e) {
+    if (!isThumbnail) return;
+    var target = delegate(e.target);
+    var index = getIndex(target) + 1;
+    thumbnail();
+    direct('#page=' + index);
+  });
+  global.addEventListener('hashchange', function() {
+    index = location.hash.split('=')[1] || 1;
+    slider();
+  });
+  global.addEventListener('mousewheel', function(e) {
+    if (isThumbnail) return;
+    var target = pages[index - 1];
+    var delta = e.wheelDelta / 120;
+    target.scrollTop += delta > 0 ? -10 : 10;
+  });
+  left.addEventListener('click', function() {
+    prev();
+  });
+  right.addEventListener('click', function() {
+    next();
+  });
+  page.addEventListener('dblclick', function() {
+    if (isThumbnail) return;
+    editAble(page.contentEditable === 'true' ? 'false' : 'true');
+  });
+  invert.addEventListener('change', function(e) {
+    var target = e.target;
+    isInvert = target.checked;
+    var cls = '';
+    if (isInvert) cls += ' invert';
+    if (isThumbnail) cls += ' thumbnail';
+    document.body.className = cls;
+  });
+  document.addEventListener('keydown', function(e) {
+    switch (e.keyCode) {
+      case 39:
+      case 40:
+        e.preventDefault();
+        next();
+        break;
+      case 37:
+      case 38:
+        e.preventDefault();
+        prev();
+        break;
+      case 27:
+        e.preventDefault();
+        direct('#page=' + 0);
+        break;
+    }
+  });
+  setTimeout(function() {
+    var images = document.querySelectorAll('img');
+    for (var i = 0; i < images.length; i ++) {
+      images[i].setAttribute('style', 'width:' + images[i].width + 'px;');
+    }
+  }, 5000);
+  setTimeout(function() {
+    slider();
+    direct('#page=' + index);
+    document.body.style.opacity = 1;
+  }, 16);
+}(this);
+</script>
+</body>
+</html>
